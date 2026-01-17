@@ -1,0 +1,21 @@
+name: Minecraft Status
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install axios
+      - run: node status.js
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          MESSAGE_ID: ${{ secrets.MESSAGE_ID }}
